@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compteur avec Texte de Description</title>
+    
+    <style>
+        @font-face {
+            font-family: 'DIN';
+            src: url('https://path-to-din-font/DIN-Bold.woff2') format('woff2'); /* Remplacez par l'URL réelle de la police DIN */
+            font-weight: bold;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'DIN', sans-serif;
+            background-color: #1c262d;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+
+        #logo {
+            position: absolute;
+            top: 30px;
+            left: 40px;
+            width: 50px;
+            height: auto;
+        }
+
+        #counter-container {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        #counter {
+            font-size: 250pt;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.5);
+        }
+
+        #description {
+            font-size: 60px;
+            margin-top: 40px;
+            color: #ffffff;
+            text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.5);
+            font-weight: 600;
+        }
+
+        /* Style pour le trait de séparation */
+        #separator {
+            width: 433px; /* Largeur initiale */
+            height: 4px;
+            background-color: #c8102e; /* Couleur rouge */
+            margin: 20px 0; /* Marge de 20 pixels au-dessus et en dessous */
+        }
+
+        #additional-text {
+            font-size: 50px;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <img id="logo" src="symbol.png" alt="Logo">
+
+    <div id="counter-container">
+        <div id="counter">0</div>
+    </div>
+    
+    <div id="description">Patients Implantés en Temps Réel</div>
+
+    <!-- Trait de séparation rouge -->
+    <div id="separator"></div>
+
+    <div id="additional-text">DEPUIS CE MATIN</div>
+
+    <script>
+        const START_HOUR = 8;  
+        const END_HOUR = 19;  
+        const START_VALUE = 0;
+        const END_VALUE = 60;
+
+        function calculateValue() {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+
+            if (currentHour >= START_HOUR && currentHour <= END_HOUR) {
+                const totalMinutes = (END_HOUR - START_HOUR) * 60;
+                const minutesElapsed = (currentHour - START_HOUR) * 60 + currentMinute;
+                const value = START_VALUE + (minutesElapsed / totalMinutes) * (END_VALUE - START_VALUE);
+                return Math.round(value);
+            } else if (currentHour < START_HOUR) {
+                return START_VALUE;
+            } else {
+                return END_VALUE;
+            }
+        }
+
+        function updateCounter() {
+            const value = calculateValue();
+            document.getElementById("counter").textContent = value;
+        }
+
+        setInterval(updateCounter, 1000);
+        updateCounter();
+    </script>
+
+</body>
+</html>
